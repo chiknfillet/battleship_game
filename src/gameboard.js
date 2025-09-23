@@ -6,6 +6,7 @@ class Gameboard {
       Array.from({ length: 10 }, () => [false, null])
     );
     this.ships = []
+    this.ship_sized = [5, 4, 3, 3, 2]
   }
 
   checkCoordinateAvailability(x_coor, y_coor, vertical, size) {
@@ -59,6 +60,20 @@ class Gameboard {
 
   checkShips() {
     return this.ships.every(ship => ship.isSunk());
+  }
+
+  placeShipsRandomly() {
+    this.ship_sized.forEach((size) => {
+      let placed = false;
+
+      while (!placed) {
+        const x_pos = Math.floor(Math.random() * 10);
+        const y_pos = Math.floor(Math.random() * 10);
+        const vertical = Math.random() < 0.5; // random orientation
+
+        placed = this.placeShip(x_pos, y_pos, vertical, size);
+      }
+    })
   }
 }
 
