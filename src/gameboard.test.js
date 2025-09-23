@@ -47,3 +47,22 @@ test('sunk all ship', () => {
   gameboard.receiveAttack(9, 9)
   expect(gameboard.checkShips()).not.toBeFalsy();
 });
+test("places ships randomly but deterministically when random is mocked", () => {
+  const gameboard = new Gameboard();
+
+  // Mock Math.random to always return predictable values
+  jest.spyOn(Math, "random")
+    .mockReturnValueOnce(0.1) // x = 1
+    .mockReturnValueOnce(0.2) // y = 2
+    .mockReturnValueOnce(0.8) // vertical = false
+    // add more if needed for more ships
+    ;
+
+  gameboard.placeShipsRandomly();
+
+  // Check that a ship was placed at (1, 2)
+  expect(gameboard.board[1][2][1]).not.toBe(null);
+
+  // Restore random
+  Math.random.mockRestore();
+});
