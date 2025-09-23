@@ -1,4 +1,9 @@
 import "./reset.css";
 import "./styles.css";
+import { initialize } from './update_dom'
 
-console.log("Hello, World");
+const Player = require('./player')
+const Gameboard = require('./gameboard')
+
+
+initialize()
