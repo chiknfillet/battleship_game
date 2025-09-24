@@ -1,16 +1,30 @@
+import pubsub from './pubsub'
+import placeShip from './place_ship'
+
 function initialize() {
-  const body = document.querySelector('body')
+  pubsub.on('changeMain', resetMain);
 
-  const header = document.createElement('header')
-  header.textContent = 'Battleship'
-  const main = document.createElement('main')
-  main.textContent = 'aasd'
-  const footer = document.createElement('footer')
-  footer.textContent = 'Developed by Marlex C. Estores'
+  const body = document.querySelector('body');
 
-  body.appendChild(header)
-  body.appendChild(main)
-  body.appendChild(footer)
+  const header = document.createElement('header');
+  header.textContent = 'Battleship';
+  const main = document.createElement('main');
+  const footer = document.createElement('footer');
+  footer.textContent = 'Developed by Marlex C. Estores';
+
+  body.appendChild(header);
+  body.appendChild(main);
+  body.appendChild(footer);
+
+  placeShip.initialize();
 }
 
-export {initialize}
+function resetMain(newContent) {
+  const container = document.querySelector('main');
+  container.innerHTML = '';
+  newContent();
+}
+
+export {
+  initialize,
+}
