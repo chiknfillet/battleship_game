@@ -38,6 +38,7 @@ main {
     justify-content: center;
     align-items: center;
     gap: 30px;
+    padding: 50px 0;
 }
 
 .placing-container {
@@ -45,6 +46,7 @@ main {
     gap: 30px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .ships-choices-container {
