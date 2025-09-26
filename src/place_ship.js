@@ -80,6 +80,7 @@ function renderShipsPlacing() {
         board.remove();
         createBoard(currentGameboard);
         placementHover();
+        showOccupiedCells(currentGameboard.board);
       }
     });
   });
@@ -90,7 +91,7 @@ function renderShipsPlacing() {
   parentContainer.appendChild(container)
 
   const placeButtons = document.querySelectorAll('.ships-choices-container ul *');
-  placeButtons.forEach(button => {
+  placeButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
       const placeBtn = button.querySelector('.place-button');
       const isPlaced = placeBtn ? placeBtn.classList.contains('disable') : false;
@@ -104,6 +105,7 @@ function renderShipsPlacing() {
         currentShipSize = size
       }
     });
+    if (index === 0) button.classList.add('active');
   });
 }
 
@@ -118,27 +120,41 @@ function createBoard(gameboard = currentGameboard, player = 'player-board') {
       const cell = document.createElement('div');
       cell.classList.add('board-cell');
 
-      // cell.dataset.row = i;
-      // cell.dataset.col = j;
-      // cell.addEventListener('click', () => {
-      //   // Place the ship
+      cell.dataset.row = i;
+      cell.dataset.col = j;
+      cell.addEventListener('click', () => {
+        // Only place ship if there is an active ship selection
+        const currentShip = document.querySelector('.ships-choices-container ul li.active');
+        if (!currentShip) return;
 
-      //   const vertical = selectedOrientation === 'vertical';
-      //   const placed = gameboard.placeShip(
-      //     parseInt(cell.dataset.row),
-      //     parseInt(cell.dataset.col),
-      //     vertical,
-      //     selectedShip.size
-      //   );
-      //   if (placed) {
-      //     // Optionally update UI to show the ship
-      //     showOccupiedCells(player, gameboard.board);
-      //   }
-      // });
+        const placed = gameboard.placeShip(
+          parseInt(cell.dataset.row),
+          parseInt(cell.dataset.col),
+          !isVertical,
+          currentShipSize
+        );
+        if (placed) {
+          currentShip.classList.remove('active');
+          currentShip.querySelector('button').classList.add('disable');
+
+          const placeButtons = document.querySelectorAll('.ships-choices-container ul *');
+          for (const button of placeButtons) {
+            const placeBtn = button.querySelector('.place-button');
+            if (placeBtn && !placeBtn.classList.contains('disable')) {
+              button.classList.add('active');
+              const sizeStr = button.querySelector('p');
+              const size = sizeStr ? Number(sizeStr.textContent.match(/\d+/)[0]) : '5';
+              currentShipSize = size;
+              break; 
+            }
+          }
+        }
+        showOccupiedCells(gameboard.board);
+      });
       container.appendChild(cell);
     }
   }
-
+  
   parentContainer.appendChild(container);
 }
 
@@ -148,6 +164,9 @@ function placementHover(player = 'player-board') {
 
   cells.forEach((cell, idx) => {
     cell.addEventListener('mouseenter', () => {
+      const currentShip = document.querySelector('.ships-choices-container ul li.active');
+      if (!currentShip) return;
+
       const row = Math.floor(idx / 10);
       const col = idx % 10;
       let valid = true;
@@ -174,8 +193,8 @@ function placementHover(player = 'player-board') {
   });
 }
 
-function showOccupiedCells(player, array) {
-  const board = document.querySelector(`.${player}`);
+function showOccupiedCells(array) {
+  const board = document.querySelector(`.player-board`);
   const cells = board.querySelectorAll('.board-cell')
 
   for (let i = 0; i < 10; i++) {
@@ -202,6 +221,7 @@ function addButtons() {
 
   const clearAllButton = document.createElement('button');
   clearAllButton.textContent = 'Clear All';
+  clearAllButton.addEventListener('click', () => pubsub.emit('newBoard'));
 
   const startButton = document.createElement('button');
   startButton.textContent = 'Start Game';

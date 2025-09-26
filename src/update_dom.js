@@ -4,7 +4,8 @@ import placeShip from './place_ship'
 function initialize(gameboard) {
   pubsub.on('changeMain', resetMain);
 
-  const body = document.querySelector('body');
+  const body = document.querySelector('body');  
+  body.innerHTML = ''
 
   const header = document.createElement('header');
   header.textContent = 'Battleship';
