@@ -112,11 +112,14 @@ main {
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    
 }
 
 .start-buttons button:not(:first-child) {
     margin-left: 20px;
+}
+
+.start-buttons button:disabled {
+    background-color: gray;
 }
 
 footer {

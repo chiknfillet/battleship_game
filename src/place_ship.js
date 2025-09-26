@@ -148,6 +148,11 @@ function createBoard(gameboard = currentGameboard, player = 'player-board') {
               break; 
             }
           }
+
+          if (currentGameboard.ships.length === 5) {
+            const start = document.querySelector('.start');
+            if (start) start.disabled = false;
+          }
         }
         showOccupiedCells(gameboard.board);
       });
@@ -217,7 +222,7 @@ function addButtons() {
   const randomPlacementButton = document.createElement('button');
   randomPlacementButton.textContent = 'Place Randomly';
   randomPlacementButton.classList.add('place-randomly')
-  randomPlacementButton.addEventListener('click', pubsub.emit('randomlyPlaceShips'))
+  randomPlacementButton.addEventListener('click', randomlyPlaceShips)
 
   const clearAllButton = document.createElement('button');
   clearAllButton.textContent = 'Clear All';
@@ -225,12 +230,27 @@ function addButtons() {
 
   const startButton = document.createElement('button');
   startButton.textContent = 'Start Game';
+  startButton.classList.add('start');
+  startButton.disabled = true;
 
   container.appendChild(randomPlacementButton);
   container.appendChild(clearAllButton);
   container.appendChild(startButton);
 
   parentContainer.appendChild(container);
+}
+
+function randomlyPlaceShips() {
+  pubsub.emit('newBoard');
+  currentGameboard.placeShipsRandomly();
+  showOccupiedCells(currentGameboard.board)
+  const start = document.querySelector('.start');
+  if (start) start.disabled = false;
+
+  const placeButtons = document.querySelectorAll('.place-button')
+  placeButtons.forEach(button => {
+    button.classList.add('disable')
+  })
 }
 
 const createRadio = (name, id, labelText, checked = false) => {
@@ -251,9 +271,6 @@ const createRadio = (name, id, labelText, checked = false) => {
     wrapper.appendChild(label);
     return wrapper;
   };
-
-let selectedShip = { name: 'Carrier', size: 5 };
-let selectedOrientation = 'horizontal';
 
 // Update these variables when the user selects a different ship or orientation
 
