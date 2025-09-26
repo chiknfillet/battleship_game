@@ -1,5 +1,8 @@
 import "./reset.css";
 import "./styles.css";
 import { initialize } from './update_dom'
+import Gameboard from "./gameboard";
 
-initialize();
+const playerBoard = new Gameboard();
+
+initialize(playerBoard);

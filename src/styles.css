@@ -71,10 +71,18 @@ main {
     border-radius: 5px;
 }
 
+.ships-choices-container li.active {
+    border: 1px solid red;
+}
+
 .place-button {
     background-color: green;
     margin-left: 30px;
     border: none;
+}
+
+.place-button.disable {
+    background-color: rgb(78, 78, 78);
 }
 
 .game-board {
@@ -89,6 +97,14 @@ main {
     width: 30px;
     border: 1px solid gray;
     background-color: var(--dark-blue);
+}
+
+.board-cell.occupied {
+    background-color: var(--light-blue);
+}
+
+.board-cell.hover {
+  background-color: rgba(0, 123, 255, 0.4);
 }
 
 .start-buttons button {

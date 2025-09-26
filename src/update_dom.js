@@ -1,7 +1,7 @@
 import pubsub from './pubsub'
 import placeShip from './place_ship'
 
-function initialize() {
+function initialize(gameboard) {
   pubsub.on('changeMain', resetMain);
 
   const body = document.querySelector('body');
@@ -16,7 +16,7 @@ function initialize() {
   body.appendChild(main);
   body.appendChild(footer);
 
-  placeShip.initialize();
+  placeShip.initialize(gameboard);
 }
 
 function resetMain(newContent) {
@@ -26,5 +26,5 @@ function resetMain(newContent) {
 }
 
 export {
-  initialize,
+  initialize
 }
