@@ -50,6 +50,7 @@ class Gameboard {
   }
 
   receiveAttack(x_coor, y_coor) {
+    if (this.board[x_coor][y_coor][0] === true) return null;
     this.board[x_coor][y_coor][0] = true;
     if (this.board[x_coor][y_coor][1]) {
       this.board[x_coor][y_coor][1].hit();

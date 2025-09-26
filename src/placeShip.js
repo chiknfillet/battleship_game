@@ -1,6 +1,6 @@
 import pubsub from './pubsub'
+import battle from './battle'
 import Gameboard from './gameboard';
-import { CustomizeRule } from 'webpack-merge';
 
 let currentGameboard = null;
 let currentShipSize = 5;
@@ -198,7 +198,7 @@ function placementHover(player = 'player-board') {
   });
 }
 
-function showOccupiedCells(array) {
+function showOccupiedCells(array, includeHit = false) {
   const board = document.querySelector(`.player-board`);
   const cells = board.querySelectorAll('.board-cell')
 
@@ -232,6 +232,7 @@ function addButtons() {
   startButton.textContent = 'Start Game';
   startButton.classList.add('start');
   startButton.disabled = true;
+  startButton.addEventListener('click', () => pubsub.emit('changeMain', battle))
 
   container.appendChild(randomPlacementButton);
   container.appendChild(clearAllButton);
@@ -241,7 +242,7 @@ function addButtons() {
 }
 
 function randomlyPlaceShips() {
-  pubsub.emit('newBoard');
+  pubsub.emit('newBoard', new Gameboard());
   currentGameboard.placeShipsRandomly();
   showOccupiedCells(currentGameboard.board)
   const start = document.querySelector('.start');

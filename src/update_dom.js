@@ -1,5 +1,5 @@
 import pubsub from './pubsub'
-import placeShip from './place_ship'
+import placeShip from './placeShip'
 
 function initialize(gameboard) {
   pubsub.on('changeMain', resetMain);

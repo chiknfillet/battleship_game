@@ -6,9 +6,9 @@ import Gameboard from "./gameboard";
 
 let playerBoard = null
 
-pubsub.on('newBoard', () => {
-  playerBoard = new Gameboard();
-  initialize(playerBoard);
+pubsub.on('newBoard', (newBoard) => {
+  playerBoard = newBoard;
+  initialize(newBoard);
 })
 
-pubsub.emit('newBoard');
+pubsub.emit('newBoard', new Gameboard());

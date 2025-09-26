@@ -103,6 +103,14 @@ main {
     background-color: var(--light-blue);
 }
 
+.board-cell.miss {
+    background-color: black;
+}
+
+.board-cell.hit {
+    background-color: red;
+}
+
 .board-cell.hover {
   background-color: rgba(0, 123, 255, 0.4);
 }
@@ -120,6 +128,32 @@ main {
 
 .start-buttons button:disabled {
     background-color: gray;
+}
+
+.info-container {
+    background-color: rgba(255, 255, 255, 0.219);
+    width: min(95%, 1000px);
+    border-radius: 20px;
+    display: flex;
+    padding: 20px 0;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.boards-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
 }
 
 footer {
