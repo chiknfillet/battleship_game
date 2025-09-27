@@ -95,6 +95,8 @@ function createBoards(isPlayer, board) {
               const playerCell = playerCells[row * 10 + col];
 
               setTimeout(() => {
+                if (!playerCell) return
+
                 enemyAttackPlaced ? playerCell.classList.add('hit') : playerCell.classList.add('miss');
                 isPlayerTurn = true;
 
@@ -126,7 +128,7 @@ function checkSunken(board, x_coor, y_coor, isPlayer) {
     updateSunkenShipsUI(board.board, ship, isPlayer)
 
     if (board.checkShips()) {
-      console.log('winner')
+      isPlayer ? pubsub.emit('gameOver', 'You Win!') : pubsub.emit('gameOver', 'You Lose!');
     }
   }
 }

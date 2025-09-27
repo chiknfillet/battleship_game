@@ -1,5 +1,10 @@
 import pubsub from './pubsub'
 import placeShip from './placeShip'
+import Gameboard from './gameboard';
+
+pubsub.on('gameOver', gameOver);
+
+let gameWinner = ''
 
 function initialize(gameboard) {
   pubsub.on('changeMain', resetMain);
@@ -18,6 +23,29 @@ function initialize(gameboard) {
   body.appendChild(footer);
 
   placeShip.initialize(gameboard);
+}
+
+function declareWinner() {
+  const parentContainer = document.querySelector('main');
+  const container = document.createElement('div');
+  container.classList.add('winner')
+  const title = document.createElement('h1');
+  title.textContent = gameWinner;
+
+  const newGameBtn = document.createElement('button');
+  newGameBtn.textContent = 'New Game';
+  newGameBtn.addEventListener('click', () => {
+    pubsub.emit('newBoard', new Gameboard());
+  });
+
+  container.appendChild(title)
+  container.appendChild(newGameBtn)
+  parentContainer.appendChild(container)
+}
+
+function gameOver(winner) {
+  gameWinner = winner
+  resetMain(declareWinner)
 }
 
 function resetMain(newContent) {
