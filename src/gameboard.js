@@ -63,6 +63,10 @@ class Gameboard {
     return this.ships.every(ship => ship.isSunk());
   }
 
+  countRemainingShips() {
+    return this.ships.filter(ship => !ship.isSunk()).length;
+  }
+
   placeShipsRandomly() {
     this.ship_sized.forEach((size) => {
       let placed = false;

@@ -76,6 +76,12 @@ function createBoards(isPlayer, board) {
             if (attack != null) {
               attack ? cell.classList.add('hit') : cell.classList.add('miss')
               isPlayerTurn = false;
+
+              if (attack) {
+                // check for enemy's sunken ship
+                checkSunken(board, i, j, true);
+              }
+
               // Enemy attack logic here
 
               let enemyAttackPlaced = null;
@@ -91,7 +97,12 @@ function createBoards(isPlayer, board) {
               setTimeout(() => {
                 enemyAttackPlaced ? playerCell.classList.add('hit') : playerCell.classList.add('miss');
                 isPlayerTurn = true;
-              }, 2000);
+
+                if (enemyAttackPlaced) {
+                  checkSunken(playerBoard, row, col, false)
+                }
+
+              }, 200);
             }
           }
         });
@@ -103,6 +114,20 @@ function createBoards(isPlayer, board) {
   parentContainer.appendChild(title);
   parentContainer.appendChild(container);
   return parentContainer
+}
+
+function checkSunken(board, x_coor, y_coor, isPlayer) {
+  const ship = board.board[x_coor][y_coor][1]
+  const isSunken = ship.isSunk();
+  if (isSunken) {
+    const target = isPlayer ? '.enemy-ships' : '.player-ships';
+    document.querySelector(target).textContent = board.countRemainingShips();
+    // update to sunken
+
+    if (board.checkShips()) {
+      console.log('winner')
+    }
+  }
 }
 
 function showHitCells(array, currentBoard) {
