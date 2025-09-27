@@ -122,11 +122,31 @@ function checkSunken(board, x_coor, y_coor, isPlayer) {
   if (isSunken) {
     const target = isPlayer ? '.enemy-ships' : '.player-ships';
     document.querySelector(target).textContent = board.countRemainingShips();
-    // update to sunken
+    
+    updateSunkenShipsUI(board.board, ship, isPlayer)
 
     if (board.checkShips()) {
       console.log('winner')
     }
+  }
+}
+
+function updateSunkenShipsUI(board, ship, isPlayer) {
+  const target = isPlayer ? '.enemy-board' : '.player-board';
+  const coordinates = [];
+
+  for (let row = 0; row < board.length; row++) {
+    for (let col = 0; col < board[row].length; col++) {
+      const cell = board[row][col];
+      if (Array.isArray(cell) && cell[1] === ship) {
+        coordinates.push([row, col]);
+      }
+    }
+  }
+  const domCells = document.querySelectorAll(`${target} > *`)
+  for (let [row, col] of coordinates) {
+    const flatIndex = row * 10 + col;
+    domCells[flatIndex].classList.add('sunken');
   }
 }
 

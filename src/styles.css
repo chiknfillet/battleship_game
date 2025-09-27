@@ -108,6 +108,10 @@ main {
 }
 
 .board-cell.hit {
+    background-color: pink;
+}
+
+.board-cell.hit.sunken {
     background-color: red;
 }
 
