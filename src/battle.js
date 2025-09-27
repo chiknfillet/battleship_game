@@ -65,16 +65,34 @@ function createBoards(isPlayer, board) {
 
       if(!isPlayer) {
         cell.addEventListener('mouseenter', () => {
-        cell.classList.add('hover')
+          cell.classList.add('hover')
         });
         cell.addEventListener('mouseleave', () => {
           cell.classList.remove('hover')
         });
         cell.addEventListener('click', () => {
-          const attack = board.receiveAttack(i, j)
-          if (attack != null) {
-            attack ? cell.classList.add('hit') : cell.classList.add('miss')
-            // Enemy attack logic here
+          if (isPlayerTurn) {
+            const attack = board.receiveAttack(i, j)
+            if (attack != null) {
+              attack ? cell.classList.add('hit') : cell.classList.add('miss')
+              isPlayerTurn = false;
+              // Enemy attack logic here
+
+              let enemyAttackPlaced = null;
+              let row, col;
+              while (enemyAttackPlaced == null) {
+                row = Math.floor(Math.random() * 10);
+                col = Math.floor(Math.random() * 10);
+                enemyAttackPlaced = playerBoard.receiveAttack(row, col);
+              }
+              const playerCells = document.querySelectorAll('.player-board .board-cell');
+              const playerCell = playerCells[row * 10 + col];
+
+              setTimeout(() => {
+                enemyAttackPlaced ? playerCell.classList.add('hit') : playerCell.classList.add('miss');
+                isPlayerTurn = true;
+              }, 2000);
+            }
           }
         });
       } 
@@ -82,7 +100,6 @@ function createBoards(isPlayer, board) {
       container.appendChild(cell);
     }
   }
-  console.log(board.board)
   parentContainer.appendChild(title);
   parentContainer.appendChild(container);
   return parentContainer
