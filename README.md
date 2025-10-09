@@ -10,7 +10,11 @@ Battleship is a web-based implementation of the classic naval strategy game, bui
 
 🔁 Easy Reset & Replay — Start a new game with a single click.
 
-[▶️ Play Live Demo](https://chiknfillet.github.io/battleship_game/)
+<p align="center">
+  <a href="https://chiknfillet.github.io/battleship_game/" target="_blank">
+    🚢 View Live Demo: Battleship Game
+  </a>
+</p>
 
 ## User Interface
 
